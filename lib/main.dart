@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:petify/notifier/liked_notifier.dart';
 import 'package:petify/screens/main_screen.dart';
 import 'package:petify/screens/namenumber_screen.dart';
 import 'package:petify/screens/otp_screen.dart';
 import 'package:petify/screens/pet_profile.dart';
 import 'package:petify/screens/welcome_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const Petify());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => LikedNotifier(),
+        ),
+      ],
+      child: const Petify(),
+    ),
+  );
 }
 
 class Petify extends StatelessWidget {

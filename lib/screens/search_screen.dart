@@ -68,7 +68,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     location: "New Jersy",
                     away: "3",
                     age: "2y 3m",
-                    isLiked: true,
+                    isLiked: false,
                   ),
                   PetCard(
                     image: const Image(

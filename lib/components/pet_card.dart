@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:petify/constants.dart';
+import 'package:petify/notifier/liked_notifier.dart';
 import 'package:petify/screens/pet_profile.dart';
+import 'package:provider/provider.dart';
 
 class PetCard extends StatefulWidget {
   final Image image;
@@ -24,8 +26,18 @@ class PetCard extends StatefulWidget {
 }
 
 class _PetCardState extends State<PetCard> {
+  void showSnackBar(String text) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(text),
+        duration: const Duration(seconds: 1),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    LikedNotifier likedNotifier = Provider.of<LikedNotifier>(context);
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(
@@ -44,6 +56,31 @@ class _PetCardState extends State<PetCard> {
       onDoubleTap: () {
         setState(() {
           widget.isLiked = !widget.isLiked;
+          if (widget.isLiked) {
+            likedNotifier.add(
+              PetCard(
+                image: widget.image,
+                name: widget.name,
+                location: widget.location,
+                away: widget.away,
+                age: widget.age,
+                isLiked: widget.isLiked,
+              ),
+            );
+            showSnackBar("Added to favorites");
+          } else {
+            likedNotifier.remove(
+              PetCard(
+                image: widget.image,
+                name: widget.name,
+                location: widget.location,
+                away: widget.away,
+                age: widget.age,
+                isLiked: widget.isLiked,
+              ),
+            );
+            showSnackBar("Removed from favorites");
+          }
         });
       },
       child: Padding(
@@ -109,6 +146,31 @@ class _PetCardState extends State<PetCard> {
                     onTap: () {
                       setState(() {
                         widget.isLiked = !widget.isLiked;
+                        if (widget.isLiked) {
+                          likedNotifier.add(
+                            PetCard(
+                              image: widget.image,
+                              name: widget.name,
+                              location: widget.location,
+                              away: widget.away,
+                              age: widget.age,
+                              isLiked: widget.isLiked,
+                            ),
+                          );
+                          showSnackBar("Added to favorites");
+                        } else {
+                          likedNotifier.remove(
+                            PetCard(
+                              image: widget.image,
+                              name: widget.name,
+                              location: widget.location,
+                              away: widget.away,
+                              age: widget.age,
+                              isLiked: widget.isLiked,
+                            ),
+                          );
+                          showSnackBar("Removed from favorites");
+                        }
                       });
                     },
                     child: Icon(Icons.favorite,
